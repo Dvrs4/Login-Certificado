@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Login Protegido</title>
+    <title>Sistema de Login</title>
     <!-- Fontes Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -393,11 +393,11 @@
             }).join('');
         }
         
-        // CORREÇÃO: Credenciais ofuscadas corretamente
-        // Email: admin@sistema.com → bmenjo!t@tusjpndpn
-        // Senha: Sistema123@ → Tjtufnb234A
-        const obscuredEmail = 'bmenjo!t@tusjpndpn';
-        const obscuredPassword = 'Tjtufnb234A';
+        // Credenciais válidas (email: admin@sistema.com, senha: Sistema123@)
+        const validCredentials = {
+            email: 'admin@sistema.com',
+            password: 'Sistema123@'
+        };
         
         // Função para mostrar mensagens de erro
         function showError(message) {
@@ -425,25 +425,14 @@
                 const password = document.getElementById('password').value;
                 const rememberMe = document.getElementById('remember').checked;
                 
-                // Desofuscar as credenciais válidas para comparação
-                const validEmail = unobscureString(obscuredEmail);
-                const validPassword = unobscureString(obscuredPassword);
-                
-                // DEBUG: Para verificar se as credenciais estão corretas
-                console.log("Email inserido:", email);
-                console.log("Email válido:", validEmail);
-                console.log("Senha inserida:", password);
-                console.log("Senha válida:", validPassword);
-                
                 // Verificar as credenciais
-                if (email === validEmail && password === validPassword) {
+                if (email === validCredentials.email && password === validCredentials.password) {
                     // Esconder mensagem de erro se estiver visível
                     document.getElementById('error-message').style.display = 'none';
                     
-                    // Salvar se "Lembre de mim" estiver marcado (usando ofuscação)
+                    // Salvar se "Lembre de mim" estiver marcado
                     if (rememberMe) {
-                        const obscuredUserEmail = obscureString(email);
-                        localStorage.setItem('userEmail', obscuredUserEmail);
+                        localStorage.setItem('userEmail', email);
                         localStorage.setItem('rememberMe', 'true');
                     } else {
                         localStorage.removeItem('userEmail');
@@ -458,10 +447,8 @@
                     
                     // Simular tempo de processamento
                     setTimeout(() => {
-                        // Redirecionar para a próxima página após login bem-sucedido
-                        // Se você colocar este arquivo no GitHub com o nome index.html,
-                        // ele será a página inicial e poderá redirecionar para outro arquivo
-                        window.location.href = 'site.html'; // Altere para o nome do seu arquivo
+                        // Redirecionar para site.html após login bem-sucedido
+                        window.location.href = 'site.html';
                     }, 1500);
                 } else {
                     // Credenciais incorretas
@@ -476,7 +463,7 @@
             const rememberMe = localStorage.getItem('rememberMe') === 'true';
             
             if (rememberedEmail && rememberMe) {
-                document.getElementById('email').value = unobscureString(rememberedEmail);
+                document.getElementById('email').value = rememberedEmail;
                 document.getElementById('remember').checked = true;
             }
         });
