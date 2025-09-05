@@ -258,6 +258,22 @@
             to { transform: rotate(360deg); }
         }
         
+        /* Credenciais de teste */
+        .test-credentials {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #6e8efb;
+            color: #fff;
+            font-size: 0.85em;
+        }
+        
+        .test-credentials h3 {
+            margin-bottom: 10px;
+            color: #a777e3;
+        }
+        
         /* Responsividade */
         @media (max-width: 480px) {
             .form-box {
@@ -273,6 +289,10 @@
                 flex-direction: column;
                 gap: 10px;
                 align-items: flex-start;
+            }
+            
+            .test-credentials {
+                display: none;
             }
         }
     </style>
@@ -302,6 +322,13 @@
                     </div>
                    <button type="submit">Entrar</button>
                    <div id="error-message" class="error-message"></div>
+                   
+                   <div class="test-credentials">
+                        <h3>Credenciais para teste:</h3>
+                        <p>Email: admin@sistema.com</p>
+                        <p>Senha: Sistema123@</p>
+                    </div>
+                   
                     <div class="register">
                         <p>Não tem uma conta? <a href="#">Registrar-se</a></p>
                     </div>
@@ -402,6 +429,12 @@
                 const validEmail = unobscureString(obscuredEmail);
                 const validPassword = unobscureString(obscuredPassword);
                 
+                // DEBUG: Para verificar se as credenciais estão corretas
+                console.log("Email inserido:", email);
+                console.log("Email válido:", validEmail);
+                console.log("Senha inserida:", password);
+                console.log("Senha válida:", validPassword);
+                
                 // Verificar as credenciais
                 if (email === validEmail && password === validPassword) {
                     // Esconder mensagem de erro se estiver visível
@@ -425,13 +458,10 @@
                     
                     // Simular tempo de processamento
                     setTimeout(() => {
-                        alert('Login realizado com sucesso!');
-                        // Aqui você redirecionaria para a área restrita
-                        // window.location.href = 'area-restrita.html';
-                        
-                        // Restaurar botão
-                        loginButton.innerHTML = originalText;
-                        loginButton.disabled = false;
+                        // Redirecionar para a próxima página após login bem-sucedido
+                        // Se você colocar este arquivo no GitHub com o nome index.html,
+                        // ele será a página inicial e poderá redirecionar para outro arquivo
+                        window.location.href = 'dashboard.html'; // Altere para o nome do seu arquivo
                     }, 1500);
                 } else {
                     // Credenciais incorretas
