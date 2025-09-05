@@ -4,144 +4,76 @@
     <meta charset="UTF-8">
     <title>Página de Login</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
-
         body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #2c3e50, #3498db);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: #111;
-            width: 100%;
-            overflow: hidden;
+            height: 100vh;
+            margin: 0;
         }
 
-        .ring {
-            position: relative;
-            width: 500px;
-            height: 500px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ring i {
-            position: absolute;
-            inset: 0;
-            border: 2px solid #fff;
-            transition: 0.5s;
-            border-radius: 50%;
-        }
-
-        .ring i:nth-child(1) {
-            border-radius: 38% 62% 61% 37% / 41% 44% 56% 59%;
-            animation: animate 6s linear infinite;
-            border-color: #00ff0a;
-        }
-        .ring i:nth-child(2) {
-            border-radius: 48% 52% 33% 67% / 43% 29% 71% 57%;
-            animation: animate 4s linear infinite;
-            border-color: #ff0057;
-        }
-        .ring i:nth-child(3) {
-            border-radius: 40% 60% 38% 62% / 40% 70% 30% 60%;
-            animation: animate 10s linear infinite;
-            border-color: #f7f309;
-        }
-
-        @keyframes animate {
-            0%   { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .login {
-            position: absolute;
-            width: 250px;
-            padding: 20px;
-            background: #222;
-            border-radius: 10px;
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            width: 300px;
             text-align: center;
-            color: #fff;
-            z-index: 10;
         }
 
-        .login h2 {
+        h2 {
             margin-bottom: 20px;
+            color: #333;
         }
 
-        .inputbox {
+        input {
+            width: 100%;
+            padding: 10px;
             margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
         }
 
-        .inputbox input[type="password"] {
+        button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: none;
-            outline: none;
-            border-radius: 5px;
-        }
-
-        .inputbox input[type="button"] {
-            width: 100%;
-            padding: 10px;
-            background: #00ff0a;
-            border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-size: 16px;
             cursor: pointer;
-            color: #000;
-            font-weight: bold;
-            margin-top: 10px;
         }
 
-        .inputbox input[type="button"]:hover {
-            background: #0dff00;
-        }
-
-        .links {
-            margin-top: 15px;
-        }
-
-        .links a {
-            color: #0dff00;
-            text-decoration: none;
-            margin: 0 5px;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
+        button:hover {
+            background: #2980b9;
         }
     </style>
 </head>
 <body>
-    <div class="ring">
-        <i></i>
-        <i></i>
-        <i></i>
-        <div class="login">
-            <h2>Login</h2>
-            <div class="inputbox">
-                <input type="password" id="senha" placeholder="Digite a senha">
-            </div> 
-            <div class="inputbox">
-                <input type="button" value="Sign in" onclick="verificarSenha()">
-            </div>
-        </div>
+    <div class="login-container" id="loginDiv">
+        <h2>Login</h2>
+        <input type="text" id="email" placeholder="Digite seu e-mail">
+        <input type="password" id="senha" placeholder="Digite sua senha">
+        <button onclick="login()">Entrar</button>
     </div>
 
     <script>
-        function verificarSenha() {
-            const senha = document.getElementById("senha").value;
-            if (senha === "teste123") {
-                window.location.href = "site.html"; // 🔗 seu sistema real
+        function login() {
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            // Troque pelos dados que você deseja
+            const emailCorreto = "usuario@teste.com";
+            const senhaCorreta = "1234";
+
+            if(email === emailCorreto && senha === senhaCorreta) {
+                // Redireciona para o sistema principal
+                window.location.href = "sistemas.html";
             } else {
-                alert("Senha incorreta!");
+                alert("E-mail ou senha incorretos!");
             }
         }
     </script>
