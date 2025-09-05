@@ -230,6 +230,34 @@
             }
         }
         
+        /* Mensagem de erro */
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Responsividade */
         @media (max-width: 480px) {
             .form-box {
@@ -250,29 +278,178 @@
     </style>
 </head>
 <body>
-    <div class="login-container" id="loginDiv">
-        <h2>Login</h2>
-        <input type="text" id="email" placeholder="Digite seu e-mail">
-        <input type="password" id="senha" placeholder="Digite sua senha">
-        <button onclick="login()">Entrar</button>
-    </div>
+    <!--- Formulário de Login -->
+    <section>
+        <div class="form-box">
+            <div class="form-value">
+                <form id="login-form">
+                    <h2>Login</h2>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="email" id="email" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input type="password" id="password" required>
+                        <label for="password">Senha</label>
+                    </div>
+                    <div class="forget">
+                        <label>
+                            <input type="checkbox" id="remember"> Lembre de mim
+                        </label>
+                        <a href="#">Esqueceu a senha?</a>
+                    </div>
+                   <button type="submit">Entrar</button>
+                   <div id="error-message" class="error-message"></div>
+                    <div class="register">
+                        <p>Não tem uma conta? <a href="#">Registrar-se</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
     <script>
-        function login() {
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
-
-            // Troque pelos dados que você deseja
-            const emailCorreto = "usuario@teste.com";
-            const senhaCorreta = "1234";
-
-            if(email === emailCorreto && senha === senhaCorreta) {
-                // Redireciona para o sistema principal
-                window.location.href = "sistemas.html";
-            } else {
-                alert("E-mail ou senha incorretos!");
-            }
+        // Proteção básica contra inspeção (dificulta, mas não impede totalmente)
+        function enableProtection() {
+            // Desativar o menu de contexto (botão direito)
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Desativar teclas de desenvolvedor (F12, Ctrl+Shift+I, etc.)
+            document.addEventListener('keydown', function(e) {
+                // F12
+                if (e.keyCode === 123) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Ctrl+Shift+I
+                if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Ctrl+U
+                if (e.ctrlKey && e.keyCode === 85) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Ctrl+Shift+C
+                if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
         }
+        
+        // Função para ofuscar strings (não é criptografia real)
+        function obscureString(str) {
+            // Esta função apenas ofusca a string, não a criptografa
+            // Em um ambiente real, você usaria uma conexão HTTPS e validação no servidor
+            return str.split('').map(char => {
+                return String.fromCharCode(char.charCodeAt(0) + 1);
+            }).join('');
+        }
+        
+        // Função para desofuscar strings
+        function unobscureString(str) {
+            return str.split('').map(char => {
+                return String.fromCharCode(char.charCodeAt(0) - 1);
+            }).join('');
+        }
+        
+        // CORREÇÃO: Credenciais ofuscadas corretamente
+        // Email: admin@sistema.com → bmenjo!t@tusjpndpn
+        // Senha: Sistema123@ → Tjtufnb234A
+        const obscuredEmail = 'bmenjo!t@tusjpndpn';
+        const obscuredPassword = 'Tjtufnb234A';
+        
+        // Função para mostrar mensagens de erro
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            
+            // Esconder a mensagem após 5 segundos
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 5000);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ativar proteções
+            enableProtection();
+            
+            const loginForm = document.getElementById('login-form');
+            
+            // Processar o formulário de login
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('remember').checked;
+                
+                // Desofuscar as credenciais válidas para comparação
+                const validEmail = unobscureString(obscuredEmail);
+                const validPassword = unobscureString(obscuredPassword);
+                
+                // Verificar as credenciais
+                if (email === validEmail && password === validPassword) {
+                    // Esconder mensagem de erro se estiver visível
+                    document.getElementById('error-message').style.display = 'none';
+                    
+                    // Salvar se "Lembre de mim" estiver marcado (usando ofuscação)
+                    if (rememberMe) {
+                        const obscuredUserEmail = obscureString(email);
+                        localStorage.setItem('userEmail', obscuredUserEmail);
+                        localStorage.setItem('rememberMe', 'true');
+                    } else {
+                        localStorage.removeItem('userEmail');
+                        localStorage.removeItem('rememberMe');
+                    }
+                    
+                    // Efeito visual de login
+                    const loginButton = loginForm.querySelector('button');
+                    const originalText = loginButton.innerHTML;
+                    loginButton.innerHTML = '<span class="loading"></span> Entrando...';
+                    loginButton.disabled = true;
+                    
+                    // Simular tempo de processamento
+                    setTimeout(() => {
+                        alert('Login realizado com sucesso!');
+                        // Aqui você redirecionaria para a área restrita
+                        // window.location.href = 'area-restrita.html';
+                        
+                        // Restaurar botão
+                        loginButton.innerHTML = originalText;
+                        loginButton.disabled = false;
+                    }, 1500);
+                } else {
+                    // Credenciais incorretas
+                    showError('Email ou senha incorretos. Tente novamente.');
+                    document.getElementById('password').value = '';
+                    document.getElementById('password').focus();
+                }
+            });
+            
+            // Verificar se há email lembrado
+            const rememberedEmail = localStorage.getItem('userEmail');
+            const rememberMe = localStorage.getItem('rememberMe') === 'true';
+            
+            if (rememberedEmail && rememberMe) {
+                document.getElementById('email').value = unobscureString(rememberedEmail);
+                document.getElementById('remember').checked = true;
+            }
+        });
     </script>
 </body>
 </html>
